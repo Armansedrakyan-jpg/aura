@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0D0B1F;
+    --surface:#161330;
+    --surface-2:#1E1A42;
+    --text:#F1EFFB;
+    --text-dim:#9791C4;
+    --violet:#8C6EFF;
+    --teal:#48E8D2;
+    --error:#FF7A7A;
+    --ring: conic-gradient(from 200deg, var(--violet), var(--teal), var(--violet));
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .display{
+    font-family:'Fraunces', serif;
+  }
+  .screen{
+    width:100%;
+    max-width:420px;
+    display:none;
+    animation:fadeIn .5s ease;
+  }
+  .screen.active{display:block;}
+  @keyframes fadeIn{
+    from{opacity:0; transform:translateY(8px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  /* ---------- Логотип/герой ---------- */
+  .brand{
+    text-align:center;
+    margin-bottom:36px;
+  }
+  .brand .ring-mini{
+    width:64px;height:64px;
+    margin:0 auto 16px;
+    border-radius:50%;
+    background:var(--ring);
+    padding:3px;
+  }
+  .brand .ring-mini-inner{
+    width:100%;height:100%;
+    border-radius:50%;
+    background:var(--bg);
+  }
+  .brand h1{
+    font-size:32px;
+    font-weight:600;
+    margin:0;
+    letter-spacing:0.5px;
+  }
+  .brand p{
+    color:var(--text-dim);
+    margin:8px 0 0;
+    font-size:15px;
+  }
+
+  /* ---------- Форма ---------- */
+  .field{
+    margin-bottom:14px;
+  }
+  label{
+    display:block;
+    font-size:13px;
+    color:var(--text-dim);
+    margin-bottom:6px;
+  }
+  input[type=text], input[type=password], input[type=email], textarea{
+    width:100%;
+    background:var(--surface);
+    border:1px solid var(--surface-2);
+    border-radius:10px;
+    padding:13px 14px;
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    font-size:15px;
+    outline:none;
+    transition:border-color .2s;
+  }
+  input:focus, textarea:focus{
+    border-color:var(--violet);
+  }
+  textarea{
+    resize:none;
+    height:96px;
+  }
+  button{
+    width:100%;
+    padding:14px;
+    border-radius:10px;
+    border:none;
+    font-size:15px;
+    font-weight:600;
+    font-family:'Inter', sans-serif;
+    cursor:pointer;
+    transition:opacity .2s, transform .1s;
+  }
+  button:active{transform:scale(0.99);}
+  button:disabled{opacity:0.5; cursor:default;}
+  .btn-primary{
+    background:linear-gradient(120deg, var(--violet), var(--teal));
+    color:#0D0B1F;
+  }
+  .btn-primary:hover:not(:disabled){opacity:0.92;}
+  .btn-ghost{
+    background:transparent;
+    color:var(--text-dim);
+    border:1px solid var(--surface-2);
+    margin-top:10px;
+  }
+  .btn-ghost:hover{color:var(--text); border-color:var(--violet);}
+  .link-row{
+    text-align:center;
+    margin-top:18px;
+  }
+  .link-row a{
+    color:var(--text-dim);
+    font-size:14px;
+    cursor:pointer;
+    text-decoration:none;
+  }
+  .link-row a:hover{color:var(--teal);}
+  .error-msg{
+    color:var(--error);
+    font-size:13px;
+    margin:-4px 0 14px;
+  }
+
+  /* ---------- Верхняя панель после логина ---------- */
+  .topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:28px;
+  }
+  .topbar .logo-small{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Fraunces', serif;
+    font-size:20px;
+  }
+  .logo-dot{
+    width:14px;height:14px;
+    border-radius:50%;
+    background:var(--ring);
+  }
+  .topbar .actions a{
+    color:var(--text-dim);
+    font-size:14px;
+    margin-left:16px;
+    cursor:pointer;
+    text-decoration:none;
+  }
+  .topbar .actions a:hover{color:var(--teal);}
+
+  /* ---------- Загрузка фото ---------- */
+  .dropzone{
+    width:100%;
+    aspect-ratio:1;
+    max-height:280px;
+    border-radius:18px;
+    border:1.5px dashed var(--surface-2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap:10px;
+    cursor:pointer;
+    color:var(--text-dim);
+    background:var(--surface);
+    overflow:hidden;
+    position:relative;
+    margin-bottom:18px;
+    transition:border-color .2s;
+  }
+  .dropzone:hover{border-color:var(--violet);}
+  .dropzone img{
+    width:100%;height:100%;
+    object-fit:cover;
+    position:absolute;
+    top:0;left:0;
+  }
+  .dropzone .hint{font-size:14px;}
+  .dropzone input{display:none;}
+
+  /* ---------- Результат / кольцо ауры ---------- */
+  .aura-stage{
+    text-align:center;
+  }
+  .aura-ring-wrap{
+    width:220px;height:220px;
+    margin:0 auto 20px;
+    position:relative;
+  }
+  .aura-ring{
+    width:100%;height:100%;
+    border-radius:50%;
+    background:var(--ring);
+    padding:8px;
+    animation:pulse 3.2s ease-in-out infinite;
+  }
+  .aura-ring-inner{
+    width:100%;height:100%;
+    border-radius:50%;
+    background:var(--bg);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  }
+  @keyframes pulse{
+    0%,100%{filter:brightness(1) blur(0px); transform:scale(1);}
+    50%{filter:brightness(1.15); transform:scale(1.02);}
+  }
+  .score-num{
+    font-family:'Fraunces', serif;
+    font-size:56px;
+    font-weight:700;
+    line-height:1;
+  }
+  .score-level{
+    color:var(--text-dim);
+    font-size:14px;
+    margin-top:6px;
+    letter-spacing:1px;
+  }
+  .traits{
+    text-align:left;
+    background:var(--surface);
+    border-radius:14px;
+    padding:18px 20px;
+    margin:24px 0;
+  }
+  .trait-row{
+    display:flex;
+    justify-content:space-between;
+    padding:8px 0;
+    border-bottom:1px solid var(--surface-2);
+    font-size:14px;
+  }
+  .trait-row:last-child{border-bottom:none;}
+  .trait-row .k{color:var(--text-dim);}
+  .verdict{
+    font-family:'Fraunces', serif;
+    font-size:19px;
+    font-style:italic;
+    line-height:1.5;
+    color:var(--text);
+    margin:0 0 28px;
+  }
+  .loading-wrap{
+    text-align:center;
+    padding:60px 0;
+  }
+  .loading-ring{
+    width:80px;height:80px;
+    margin:0 auto 18px;
+    border-radius:50%;
+    background:var(--ring);
+    padding:4px;
+    animation:spin 1.6s linear infinite;
+  }
+  .loading-ring-inner{
+    width:100%;height:100%;
+    border-radius:50%;
+    background:var(--bg);
+  }
+  @keyframes spin{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+  }
+
+  /* ---------- История ---------- */
+  .history-item{
+    background:var(--surface);
+    border-radius:14px;
+    padding:16px 18px;
+    margin-bottom:10px;
+  }
+  .history-item .row-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-bottom:6px;
+  }
+  .history-item .score{
+    font-family:'Fraunces', serif;
+    font-size:22px;
+    font-weight:600;
+  }
+  .history-item .level{
+    color:var(--text-dim);
+    font-size:13px;
+  }
+  .history-item .verdict-short{
+    font-size:14px;
+    color:var(--text-dim);
+  }
+  .empty-state{
+    text-align:center;
+    color:var(--text-dim);
+    padding:40px 0;
+    font-size:15px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= AUTH ================= -->
+<div class="screen active" id="screen-auth">
+  <div class="brand">
+    <div class="ring-mini"><div class="ring-mini-inner"></div></div>
+    <h1 class="display">Aura</h1>
+    <p id="auth-subtitle">Узнай свою ауру по фото и описанию себя</p>
+  </div>
+
+  <div id="auth-error" class="error-msg" style="display:none;"></div>
+
+  <div class="field" id="field-email" style="display:none;">
+    <label>Email</label>
+    <input type="email" id="input-email" placeholder="you@example.com">
+  </div>
+  <div class="field">
+    <label id="label-login">Username или email</label>
+    <input type="text" id="input-login" placeholder="username">
+  </div>
+  <div class="field">
+    <label>Пароль</label>
+    <input type="password" id="input-password" placeholder="••••••••">
+  </div>
+
+  <button class="btn-primary" id="btn-auth-submit" onclick="submitAuth()">Войти</button>
+
+  <div class="link-row">
+    <a id="toggle-auth-mode" onclick="toggleAuthMode()">Нет аккаунта? Зарегистрироваться</a>
+  </div>
+</div>
+
+<!-- ================= HOME / CREATE ================= -->
+<div class="screen" id="screen-home">
+  <div class="topbar">
+    <div class="logo-small"><span class="logo-dot"></span> Aura</div>
+    <div class="actions">
+      <a onclick="showHistory()">История</a>
+      <a onclick="logout()">Выйти</a>
+    </div>
+  </div>
+
+  <label class="dropzone" id="dropzone" for="photo-input">
+    <img id="preview-img" style="display:none;">
+    <span class="hint" id="dropzone-hint">Нажми, чтобы выбрать фото</span>
+    <input type="file" id="photo-input" accept="image/*" onchange="onPhotoSelected(event)">
+  </label>
+
+  <div class="field">
+    <label>Расскажи о себе — это тоже влияет на результат</label>
+    <textarea id="about-me" placeholder="Пара слов о себе — характер, интересы, стиль жизни..."></textarea>
+  </div>
+
+  <div id="home-error" class="error-msg" style="display:none;"></div>
+
+  <button class="btn-primary" id="btn-analyze" onclick="submitAnalyze()" disabled>Узнать свою ауру</button>
+</div>
+
+<!-- ================= LOADING ================= -->
+<div class="screen" id="screen-loading">
+  <div class="loading-wrap">
+    <div class="loading-ring"><div class="loading-ring-inner"></div></div>
+    <p style="color:var(--text-dim);">Считываем твою ауру...</p>
+  </div>
+</div>
+
+<!-- ================= RESULT ================= -->
+<div class="screen" id="screen-result">
+  <div class="aura-stage">
+    <div class="aura-ring-wrap">
+      <div class="aura-ring"><div class="aura-ring-inner">
+        <div class="score-num" id="res-score">--</div>
+        <div class="score-level" id="res-level">LEVEL</div>
+      </div></div>
+    </div>
+
+    <div class="traits">
+      <div class="trait-row"><span class="k">Вайб</span><span id="res-vibe">—</span></div>
+      <div class="trait-row"><span class="k">Энергия</span><span id="res-energy">—</span></div>
+      <div class="trait-row"><span class="k">Уверенность</span><span id="res-confidence">—</span></div>
+      <div class="trait-row"><span class="k">Личность</span><span id="res-personality">—</span></div>
+    </div>
+
+    <p class="verdict" id="res-verdict">—</p>
+
+    <button class="btn-primary" onclick="goHome()">Новый анализ</button>
+    <button class="btn-ghost" onclick="showHistory()">Смотреть историю</button>
+  </div>
+</div>
+
+<!-- ================= HISTORY ================= -->
+<div class="screen" id="screen-history">
+  <div class="topbar">
+    <div class="logo-small"><span class="logo-dot"></span> История</div>
+    <div class="actions">
+      <a onclick="goHome()">Назад</a>
+    </div>
+  </div>
+  <div id="history-list"></div>
+</div>
+
+<script>
+  // ВАЖНО: поменяй на адрес своего backend перед показом заказчику
+  const API_BASE = "http://localhost:8080";
+
+  let authMode = "login"; // или "register"
+  let selectedFile = null;
+  let lastResult = null;
+
+  function showScreen(id){
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function getToken(){ return localStorage.getItem('aura_token'); }
+  function setToken(t){ localStorage.setItem('aura_token', t); }
+  function clearToken(){ localStorage.removeItem('aura_token'); }
+
+  // ---------- AUTH ----------
+  function toggleAuthMode(){
+    authMode = authMode === "login" ? "register" : "login";
+    const isRegister = authMode === "register";
+    document.getElementById('field-email').style.display = isRegister ? 'block' : 'none';
+    document.getElementById('label-login').textContent = isRegister ? 'Username' : 'Username или email';
+    document.getElementById('btn-auth-submit').textContent = isRegister ? 'Зарегистрироваться' : 'Войти';
+    document.getElementById('toggle-auth-mode').textContent = isRegister
+      ? 'Уже есть аккаунт? Войти'
+      : 'Нет аккаунта? Зарегистрироваться';
+    document.getElementById('auth-error').style.display = 'none';
+  }
+
+  async function submitAuth(){
+    const login = document.getElementById('input-login').value.trim();
+    const password = document.getElementById('input-password').value;
+    const errorEl = document.getElementById('auth-error');
+    errorEl.style.display = 'none';
+
+    if(!login || !password){
+      errorEl.textContent = "Заполни все поля";
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    try{
+      let res, data;
+      if(authMode === "login"){
+        res = await fetch(`${API_BASE}/api/auth/login`, {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ usernameOrEmail: login, password })
+        });
+      } else {
+        const email = document.getElementById('input-email').value.trim();
+        res = await fetch(`${API_BASE}/api/auth/register`, {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ username: login, email, password })
+        });
+      }
+      data = await res.json();
+      if(!res.ok){
+        errorEl.textContent = typeof data === 'string' ? data : (data.message || "Ошибка авторизации");
+        errorEl.style.display = 'block';
+        return;
+      }
+      setToken(data.token);
+      goHome();
+    } catch(e){
+      errorEl.textContent = "Не удалось связаться с сервером";
+      errorEl.style.display = 'block';
+    }
+  }
+
+  function logout(){
+    clearToken();
+    showScreen('screen-auth');
+  }
+
+  function goHome(){
+    if(!getToken()){ showScreen('screen-auth'); return; }
+    selectedFile = null;
+    document.getElementById('preview-img').style.display = 'none';
+    document.getElementById('dropzone-hint').style.display = 'block';
+    document.getElementById('about-me').value = '';
+    document.getElementById('btn-analyze').disabled = true;
+    document.getElementById('home-error').style.display = 'none';
+    showScreen('screen-home');
+  }
+
+  // ---------- PHOTO ----------
+  function onPhotoSelected(e){
+    const file = e.target.files[0];
+    if(!file) return;
+    selectedFile = file;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const img = document.getElementById('preview-img');
+      img.src = ev.target.result;
+      img.style.display = 'block';
+      document.getElementById('dropzone-hint').style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+    document.getElementById('btn-analyze').disabled = false;
+  }
+
+  // ---------- ANALYZE ----------
+  async function submitAnalyze(){
+    const errorEl = document.getElementById('home-error');
+    errorEl.style.display = 'none';
+
+    if(!selectedFile){
+      errorEl.textContent = "Выбери фото";
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    showScreen('screen-loading');
+
+    const formData = new FormData();
+    formData.append('photo', selectedFile);
+    formData.append('aboutMe', document.getElementById('about-me').value);
+
+    try{
+      const res = await fetch(`${API_BASE}/api/aura/analyze`, {
+        method:'POST',
+        headers:{ 'Authorization': `Bearer ${getToken()}` },
+        body: formData
+      });
+      const data = await res.json();
+      if(!res.ok){
+        goHome();
+        document.getElementById('home-error').textContent = typeof data === 'string' ? data : "Ошибка анализа";
+        document.getElementById('home-error').style.display = 'block';
+        return;
+      }
+      lastResult = data;
+      renderResult(data);
+      showScreen('screen-result');
+    } catch(e){
+      goHome();
+      document.getElementById('home-error').textContent = "Не удалось связаться с сервером";
+      document.getElementById('home-error').style.display = 'block';
+    }
+  }
+
+  function renderResult(data){
+    document.getElementById('res-score').textContent = data.score;
+    document.getElementById('res-level').textContent = data.level;
+    document.getElementById('res-vibe').textContent = data.vibe;
+    document.getElementById('res-energy').textContent = data.energy;
+    document.getElementById('res-confidence').textContent = data.confidence;
+    document.getElementById('res-personality').textContent = data.personality;
+    document.getElementById('res-verdict').textContent = data.verdict;
+  }
+
+  // ---------- HISTORY ----------
+  async function showHistory(){
+    showScreen('screen-history');
+    const listEl = document.getElementById('history-list');
+    listEl.innerHTML = '<div class="empty-state">Загружаем...</div>';
+
+    try{
+      const res = await fetch(`${API_BASE}/api/aura/history`, {
+        headers:{ 'Authorization': `Bearer ${getToken()}` }
+      });
+      const data = await res.json();
+      if(!res.ok || !Array.isArray(data) || data.length === 0){
+        listEl.innerHTML = '<div class="empty-state">Анализов пока нет</div>';
+        return;
+      }
+      listEl.innerHTML = data.map(item => `
+        <div class="history-item">
+          <div class="row-top">
+            <span class="score">${item.score}</span>
+            <span class="level">${item.level}</span>
+          </div>
+          <div class="verdict-short">${item.verdict || ''}</div>
+        </div>
+      `).join('');
+    } catch(e){
+      listEl.innerHTML = '<div class="empty-state">Не удалось загрузить историю</div>';
+    }
+  }
+
+  // ---------- INIT ----------
+  if(getToken()){
+    goHome();
+  }
+</script>
+
+</body>
+</html>

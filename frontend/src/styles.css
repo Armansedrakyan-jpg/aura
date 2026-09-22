@@ -1,0 +1,420 @@
+:root {
+  --bg: #0d0b1f;
+  --surface: #161330;
+  --surface-2: #1e1a42;
+  --text: #f1effb;
+  --text-dim: #9791c4;
+  --violet: #8c6eff;
+  --teal: #48e8d2;
+  --error: #ff7a7a;
+  --ring: conic-gradient(from 200deg, var(--violet), var(--teal), var(--violet));
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.display {
+  font-family: 'Fraunces', serif;
+}
+
+.screen {
+  width: 100%;
+  max-width: 420px;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Логотип/герой ---------- */
+.brand {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.ring-mini {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: var(--ring);
+  padding: 3px;
+}
+
+.ring-mini-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--bg);
+}
+
+.brand h1 {
+  font-size: 32px;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.brand p {
+  color: var(--text-dim);
+  margin: 8px 0 0;
+  font-size: 15px;
+}
+
+/* ---------- Форма ---------- */
+.field {
+  margin-bottom: 14px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+
+input[type='text'],
+input[type='password'],
+input[type='email'],
+textarea {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--surface-2);
+  border-radius: 10px;
+  padding: 13px 14px;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--violet);
+}
+
+textarea {
+  resize: none;
+  height: 96px;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+button:active {
+  transform: scale(0.99);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.btn-primary {
+  background: linear-gradient(120deg, var(--violet), var(--teal));
+  color: #0d0b1f;
+}
+
+.btn-primary:hover:not(:disabled) {
+  opacity: 0.92;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid var(--surface-2);
+  margin-top: 10px;
+}
+
+.btn-ghost:hover {
+  color: var(--text);
+  border-color: var(--violet);
+}
+
+.btn-link {
+  width: auto;
+  padding: 0;
+  background: transparent;
+  color: var(--text-dim);
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.btn-link:hover {
+  color: var(--teal);
+}
+
+.link-row {
+  text-align: center;
+  margin-top: 18px;
+}
+
+.error-msg {
+  color: var(--error);
+  font-size: 13px;
+  margin: -4px 0 14px;
+}
+
+/* ---------- Верхняя панель после логина ---------- */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.logo-small {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+}
+
+.logo-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--ring);
+}
+
+.topbar .actions .btn-link {
+  margin-left: 16px;
+}
+
+/* ---------- Загрузка фото ---------- */
+.dropzone {
+  width: 100%;
+  aspect-ratio: 1;
+  max-height: 280px;
+  border-radius: 18px;
+  border: 1.5px dashed var(--surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  color: var(--text-dim);
+  background: var(--surface);
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 18px;
+  transition: border-color 0.2s;
+}
+
+.dropzone:hover {
+  border-color: var(--violet);
+}
+
+.dropzone img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.dropzone .hint {
+  font-size: 14px;
+}
+
+.dropzone input {
+  display: none;
+}
+
+/* ---------- Результат / кольцо ауры ---------- */
+.aura-stage {
+  text-align: center;
+}
+
+.aura-ring-wrap {
+  width: 220px;
+  height: 220px;
+  margin: 0 auto 20px;
+  position: relative;
+}
+
+.aura-ring {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--ring);
+  padding: 8px;
+  animation: pulse 3.2s ease-in-out infinite;
+}
+
+.aura-ring-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    filter: brightness(1) blur(0px);
+    transform: scale(1);
+  }
+  50% {
+    filter: brightness(1.15);
+    transform: scale(1.02);
+  }
+}
+
+.score-num {
+  font-family: 'Fraunces', serif;
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.score-level {
+  color: var(--text-dim);
+  font-size: 14px;
+  margin-top: 6px;
+  letter-spacing: 1px;
+}
+
+.traits {
+  text-align: left;
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin: 24px 0;
+}
+
+.trait-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--surface-2);
+  font-size: 14px;
+}
+
+.trait-row:last-child {
+  border-bottom: none;
+}
+
+.trait-row .k {
+  color: var(--text-dim);
+}
+
+.verdict {
+  font-family: 'Fraunces', serif;
+  font-size: 19px;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--text);
+  margin: 0 0 28px;
+}
+
+.loading-wrap {
+  text-align: center;
+  padding: 60px 0;
+}
+
+.loading-ring {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: var(--ring);
+  padding: 4px;
+  animation: spin 1.6s linear infinite;
+}
+
+.loading-ring-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--bg);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.dim {
+  color: var(--text-dim);
+}
+
+/* ---------- История ---------- */
+.history-item {
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 10px;
+}
+
+.history-item .row-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.history-item .score {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.history-item .level {
+  color: var(--text-dim);
+  font-size: 13px;
+}
+
+.history-item .verdict-short {
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--text-dim);
+  padding: 40px 0;
+  font-size: 15px;
+}
