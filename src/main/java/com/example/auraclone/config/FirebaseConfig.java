@@ -12,19 +12,29 @@ import java.io.InputStream;
 @Configuration
 public class FirebaseConfig {
 
-    // Spring сам найдет файл в папке ресурсов
     @Value("classpath:service-account.json")
     private Resource serviceAccountFile;
 
     @PostConstruct
     public void init() {
         try {
-            if (!serviceAccountFile.exists()) {
-                System.err.println("🔴 ОШИБКА: Файл service-account.json не найден в папке ресурсов!");
+            InputStream serviceAccount;
+            String credentialsJson = System.getenv("FIREBASE_CREDENTIALS_JSON");
+
+            if (credentialsJson != null && !credentialsJson.trim().isEmpty()) {
+                // На Railway читаем из безопасной переменной окружения
+                serviceAccount = new java.io.ByteArrayInputStream(
+                        credentialsJson.getBytes(java.nio.charset.StandardCharsets.UTF_8)
+                );
+                System.out.println("🟢 Firebase запущен через переменную (Railway)");
+            } else if (serviceAccountFile.exists()) {
+                // На твоем ПК читаем локальный файл
+                serviceAccount = serviceAccountFile.getInputStream();
+                System.out.println("🟢 Firebase запущен локально (IntelliJ)");
+            } else {
+                System.err.println("🔴 ОШИБКА: Сертификат Firebase не найден!");
                 return;
             }
-
-            InputStream serviceAccount = serviceAccountFile.getInputStream();
 
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
@@ -33,10 +43,8 @@ public class FirebaseConfig {
 
             if (FirebaseApp.getApps().isEmpty()) {
                 FirebaseApp.initializeApp(options);
-                System.out.println("🟢 Firebase успешно подключен к проекту aura!");
             }
         } catch (Exception e) {
-            System.err.println("🔴 Ошибка при инициализации Firebase:");
             e.printStackTrace();
         }
     }

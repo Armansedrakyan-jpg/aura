@@ -1,10 +1,8 @@
-# Этап 1: Сборка JAR-файла с помощью Maven
 FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY . .
 RUN mvn clean package -DskipTests
 
-# Этап 2: Запуск готового приложения
 FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
