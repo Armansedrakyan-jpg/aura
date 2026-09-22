@@ -72,4 +72,11 @@ public class AuraAnalyzeController {
                 .<ResponseEntity<?>>map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(404).body("Не найдено"));
     }
+    @GetMapping("/leaderboard")
+    public ResponseEntity<?> getLeaderboard() {
+        return ResponseEntity.ok(auraAnalysisRepository.getLeaderboard(
+                org.springframework.data.domain.PageRequest.of(0, 1000)
+        ));
+    }
+
 }
