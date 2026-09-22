@@ -27,7 +27,7 @@ public class BattleService {
     }
 
     public String startBattle(Battle battle) {
-        String battleId = UUID.randomUUID().toString();
+        String battleId = String.valueOf(100000 + new java.util.Random().nextInt(900000));
 
         DatabaseReference ref = FirebaseDatabase.getInstance()
                 .getReference("battles")
