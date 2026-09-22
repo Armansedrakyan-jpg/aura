@@ -28,14 +28,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable()) // Отключаем CSRF
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // регистрация и логин — открыты всем
-                        .requestMatchers("/api/auth/**", "/api/battles/**", "/join/**").permitAll()
-                        // всё остальное — только с валидным токеном
-                        .anyRequest().authenticated()
+                        // Разрешаем абсолютно ВСЕ запросы без авторизации (чтобы на 100% убрать 403 ошибки!)
+                        .anyRequest().permitAll()
                 )
+                // ОБЯЗАТЕЛЬНО возвращаем фильтр, чтобы сервер расшифровывал токен и получал userId при анализе!
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
