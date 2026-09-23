@@ -24,4 +24,11 @@ public class BattleController {
         // Возвращаем JSON-объект вместо обычного текста!
         return ResponseEntity.ok(java.util.Map.of("battleId", battleId));
     }
+    @PutMapping("/join/{battleId}")
+    public ResponseEntity<?> joinBattle(@PathVariable String battleId, @RequestBody Player player2) {
+        battleService.joinBattle(battleId, player2);
+        // Возвращаем JSON-карту вместо обычного текста!
+        return ResponseEntity.ok(java.util.Map.of("status", "success"));
+    }
+
 }

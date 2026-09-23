@@ -28,15 +28,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Отключаем CSRF
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Разрешаем абсолютно ВСЕ запросы без авторизации (чтобы на 100% убрать 403 ошибки!)
-                        .anyRequest().permitAll()
+                        .anyRequest().permitAll() // Разрешаем всё без 403
                 )
-                // ОБЯЗАТЕЛЬНО возвращаем фильтр, чтобы сервер расшифровывал токен и получал userId при анализе!
+                // Возвращаем фильтр обратно в цепочку!
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 }
+
