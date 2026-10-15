@@ -41,10 +41,14 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody();
     }
-
     public Long extractUserId(String token) {
-        return parseToken(token).get("userId", Long.class);
+        Object userId = parseToken(token).get("userId");
+        if (userId instanceof Number) {
+            return ((Number) userId).longValue(); // Безопасно приводим Integer или Long к Long!
+        }
+        return null;
     }
+
 
     public boolean isTokenValid(String token) {
         try {
