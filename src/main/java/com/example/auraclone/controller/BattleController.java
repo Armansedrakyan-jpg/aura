@@ -2,9 +2,14 @@ package com.example.auraclone.controller;
 
 import com.example.auraclone.dto.Battle;
 import com.example.auraclone.dto.Player;
+import com.example.auraclone.entity.BattleHistory;
 import com.example.auraclone.service.BattleService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/battles")
@@ -17,18 +22,29 @@ public class BattleController {
     }
 
     @PostMapping("/start")
-    public ResponseEntity<?> startBattle(@RequestBody Player player) {
-        Battle newBattle = new Battle("WAITING", System.currentTimeMillis(), player);
-        String battleId = battleService.startBattle(newBattle);
-
-        // Возвращаем JSON-объект вместо обычного текста!
-        return ResponseEntity.ok(java.util.Map.of("battleId", battleId));
+    public ResponseEntity<Map<String, String>> startBattle(
+            @RequestBody(required = false) Player player,
+            Authentication authentication
+    ) {
+        Long userId = (Long) authentication.getPrincipal();
+        String battleId = battleService.startBattle(userId, player);
+        return ResponseEntity.ok(Map.of("battleId", battleId));
     }
+
     @PutMapping("/join/{battleId}")
-    public ResponseEntity<?> joinBattle(@PathVariable String battleId, @RequestBody Player player2) {
-        battleService.joinBattle(battleId, player2);
-        // Возвращаем JSON-карту вместо обычного текста!
-        return ResponseEntity.ok(java.util.Map.of("status", "success"));
+    public ResponseEntity<Battle> joinBattle(
+            @PathVariable String battleId,
+            @RequestBody(required = false) Player player2,
+            Authentication authentication
+    ) {
+        Long userId = (Long) authentication.getPrincipal();
+        Battle finished = battleService.joinBattle(battleId, userId, player2);
+        return ResponseEntity.ok(finished);
     }
 
+    @GetMapping("/history")
+    public ResponseEntity<List<BattleHistory>> history(Authentication authentication) {
+        Long userId = (Long) authentication.getPrincipal();
+        return ResponseEntity.ok(battleService.getUserBattleHistory(userId));
+    }
 }

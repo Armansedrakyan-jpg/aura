@@ -4,8 +4,16 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "aura_analysis")
+@Table(
+        name = "aura_analysis",
+        indexes = {
+                @Index(name = "idx_aura_user_created", columnList = "user_id, createdAt"),
+                @Index(name = "idx_aura_score", columnList = "score"),
+                @Index(name = "idx_aura_user_score_created", columnList = "user_id, score, createdAt, id")
+        }
+)
 public class AuraAnalysis {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

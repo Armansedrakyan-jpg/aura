@@ -20,6 +20,24 @@ public class User {
     @Column(nullable = false)
     private String password; // хранится в виде BCrypt-хэша, никогда не plain text
 
+    @Column(name = "last_free_analysis_at")
+    private LocalDateTime lastFreeAnalysisAt;
+
+    @Column(nullable = false, columnDefinition = "INT NOT NULL DEFAULT 0")
+    private int credits = 0;
+
+    @Column(name = "avatar_frame", nullable = false, length = 50, columnDefinition = "VARCHAR(50) NOT NULL DEFAULT 'DEFAULT'")
+    private String avatarFrame = "DEFAULT";
+
+    @Column(name = "avatar_effect", length = 50)
+    private String avatarEffect;
+
+    @Column(name = "equipped_frame_id")
+    private Long equippedFrameId;
+
+    @Column(name = "equipped_effect_id")
+    private Long equippedEffectId;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -58,6 +76,54 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public LocalDateTime getLastFreeAnalysisAt() {
+        return lastFreeAnalysisAt;
+    }
+
+    public void setLastFreeAnalysisAt(LocalDateTime lastFreeAnalysisAt) {
+        this.lastFreeAnalysisAt = lastFreeAnalysisAt;
+    }
+
+    public int getCredits() {
+        return credits;
+    }
+
+    public void setCredits(int credits) {
+        this.credits = credits;
+    }
+
+    public String getAvatarFrame() {
+        return avatarFrame;
+    }
+
+    public void setAvatarFrame(String avatarFrame) {
+        this.avatarFrame = avatarFrame;
+    }
+
+    public String getAvatarEffect() {
+        return avatarEffect;
+    }
+
+    public void setAvatarEffect(String avatarEffect) {
+        this.avatarEffect = avatarEffect;
+    }
+
+    public Long getEquippedFrameId() {
+        return equippedFrameId;
+    }
+
+    public void setEquippedFrameId(Long equippedFrameId) {
+        this.equippedFrameId = equippedFrameId;
+    }
+
+    public Long getEquippedEffectId() {
+        return equippedEffectId;
+    }
+
+    public void setEquippedEffectId(Long equippedEffectId) {
+        this.equippedEffectId = equippedEffectId;
     }
 
     public LocalDateTime getCreatedAt() {

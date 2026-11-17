@@ -4,8 +4,15 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "battle_history")
+@Table(
+        name = "battle_history",
+        indexes = {
+                @Index(name = "idx_battle_p1_created", columnList = "player1Id, createdAt"),
+                @Index(name = "idx_battle_p2_created", columnList = "player2Id, createdAt")
+        }
+)
 public class BattleHistory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;

@@ -1,4 +1,19 @@
-/target/
-/.idea/
-/*.iml
+# Build & IDE
+target/
+.idea/
+*.iml
+*.log
+
+# Environment & Secrets
+.env
+.env.*
+!.env.example
 /src/main/resources/service-account.json
+*service-account*.json
+*.pem
+*.p12
+*.jks
+*.keystore
+application-local*.properties
+application-secret*.properties
+
