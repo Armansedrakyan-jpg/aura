@@ -1,0 +1,41 @@
+# Built application files
+*.apk
+*.aar
+*.aab
+*.apks
+
+# Files for Bundles/APKs
+*.pyc
+*.pyo
+
+# Generated files
+/build/
+.gradle/
+/captures/
+.externalNativeBuild/
+.cxx/
+local.properties
+
+# Host-specific information
+/local.properties
+
+# Keystore files
+*.jks
+*.keystore
+
+# IntelliJ project files
+*.iml
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/codeStyles/
+.idea/gradle.xml
+.idea/shelf/
+.idea/misc.xml
+.idea/inspectionProfiles/
+.idea/
+.DS_Store
+
